@@ -55,6 +55,25 @@ function apiAxios (method, url, params, success, failure) {
     }
   })
 }
+// http request 拦截器  
+axios.interceptors.request.use(  
+    config => {  
+    	  console.log(config)
+        return config;  
+    },  
+    err => {
+    	  console.log(err)
+        return Promise.reject(err);  
+    });  
+   
+// http response 拦截器  
+axios.interceptors.response.use(  
+    response => {  
+        return response;  
+    },  
+    error => {  
+    	  return Promise.reject(err);  
+    });  
 
 // 返回在vue模板中的调用接口
 export default {

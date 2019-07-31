@@ -6,7 +6,7 @@
       <el-submenu index="1">
         <template slot="title"><i class="el-icon-message"></i>用户管理</template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">用户列表</el-menu-item>
+          <el-menu-item index="1-1" >用户列表</el-menu-item>
           <el-menu-item index="1-2">选项2</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
@@ -23,11 +23,11 @@
           <el-dropdown-item @click.native="exit">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <span @click="exit">王小虎</span>
+      <span>王小虎</span>
     </el-header>
     
     <el-main>
-      <el-table :data="tableData">
+      <el-table :data="users">
         <el-table-column prop="id" label="ID" width="140">
         </el-table-column>
         <el-table-column prop="name" label="姓名" width="120">
@@ -55,22 +55,20 @@
 </template>
 
 <script>
-
+import {mapGetters, mapActions} from 'vuex'
 export default {
     data() {
       return {
         tableData:[]
       }
     },
-    mounted(){
-    	this.$api.post('/users/list','',(res)=>{
-    		if(res.status=='0')
-    		{
-    			this.tableData=res.result
-    		}
-	    	},(error)=>{
-	    		console.log(error)
-	    	})
+    computed:{
+    	...mapGetters(['users'])
+    }
+    ,
+    created(){
+	    	this.$store.dispatch('readUsers')
+	  
     },
     methods:{
     	exit(){

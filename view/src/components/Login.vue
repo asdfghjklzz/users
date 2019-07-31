@@ -13,7 +13,10 @@
       <el-col class="line" :span="1">&nbsp;</el-col>
     </el-form-item>
   <el-form-item style="text-align: center;">
-    <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
+    <el-button type="primary" @click="submitForm('loginForm')">
+    	<span v-show='login'>登录</span>
+    	<span v-show='logining'>登录中...</span>
+    </el-button>
     <el-button @click="resetForm('loginForm')">取消</el-button>
   </el-form-item>
   </el-form>
@@ -29,8 +32,9 @@
 				username:'',
 				password:''
 			},
-			ishow:false
-			,
+			ishow:false,
+			login:true,
+			logining:false,
 			rules:{
 			username: [
             { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -47,16 +51,20 @@
 	      submitForm(formName) {
 	        this.$refs.loginForm.validate((valid) => {
 	          if (valid) {
+	          		this.login=false
+	      			this.logining=true
 	             axios.post('/users/login',{loginForm:this.loginForm}).then((response)=>{
 	             	let res=response.data
 	             	if(res.status=='0'){
-	             		this.$cookies.set('name',res.result.name,30 * 60)
-	             		this.$cookies.set('password',res.result.password,30 * 60)
+	             		this.$cookies.set('name',res.result.name,30*60)
+	             		this.$cookies.set('password',res.result.password,30*60)
 	             		this.$router.push("/Main")
 	             	}else{
 	             		this.ishow=true
 	             		setTimeout(()=>{
 	             			this.ishow=false
+	             			this.login=true
+	      					this.logining=false
 	             		},3000)
 	             	}
 	             }).catch((error)=>{
