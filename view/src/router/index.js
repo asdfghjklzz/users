@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login'
-import Main from '@/components/Main'
-import NotFound from '@/components/NotFound'
+import Login from '@/view/Login'
+import Main from '@/view/Main'
+import NotFound from '@/view/NotFound'
+import AddUser from '@/components/AddUser'
 Vue.use(Router)
 
 const router = new Router({
@@ -16,7 +17,11 @@ const router = new Router({
       component: Main,
       meta: {
         islogin: true
-      }
+      },		
+      children:[{
+			path:'/Main/AddUser',
+			component:AddUser
+			}]
     },
 		{
 			path: "/404",
